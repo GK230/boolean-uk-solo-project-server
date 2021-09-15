@@ -1,8 +1,10 @@
-require("dotenv").config();
+import { config } from "dotenv"
 
-const express = require("express");
-const cors = require("cors");
-const morgan = require("morgan");
+import express from "express"
+import cors from "cors"
+import morgan from "morgan"
+
+config()
 
 const app = express();
 
