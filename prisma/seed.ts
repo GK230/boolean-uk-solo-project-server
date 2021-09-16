@@ -159,11 +159,6 @@ const brands = [
   },
 ];
 
-// const getRandomElement = (array) => {
-//   const number = Math.floor(Math.random() * array.length);
-//   return array[number];
-// };
-
 const seed = async () => {
   const arrayBrandsPromises = brands.map(async (brand) => {
     return await dbClient.brand.create({
