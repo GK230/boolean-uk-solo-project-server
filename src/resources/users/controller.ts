@@ -34,13 +34,23 @@ export const getUser = async (req: Request, res: Response) => {
 
 export const createUser = async (req: Request, res: Response) => {
   const newUser = req.body;
+  newUser.totalCredits = 0;
   try {
     const savedUser = await userClient.createWithHash(newUser);
-    res.json({ data: savedUser });
+    res.json({ data: { username: savedUser.username } });
   } catch (error) {
     console.error(error);
     res.json({ error });
   }
+
+  // const token = createToken({
+  //   id: savedUser.id,
+  //   username: savedUser.username,
+  // });
+
+  // // This creates a cookie that can't be accessed by Javascript in the Frontend
+  // // httpOnly: true
+  // res.cookie("token", token, { httpOnly: true });
 };
 
 export const updateUser = async (req: Request, res: Response) => {

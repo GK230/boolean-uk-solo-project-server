@@ -3,12 +3,10 @@ import { hash } from "bcrypt";
 import { compare } from "bcrypt";
 
 export type NewUser = {
-    id: Number;
 	email: string;
     username: string;
 	password: string;
 	avatar: string;
-    totalCredits: Number;
 };
 
 const createWithHash = async (newUser: NewUser) => {
