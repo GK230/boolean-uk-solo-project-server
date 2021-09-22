@@ -6,6 +6,7 @@ import { createToken, validateToken } from "../../utils/authGenerator";
 export const loginUser = async (req: Request, res: Response) => {
   //  Get user credentials
   const userCreds: User = req.body;
+  console.log(userCreds)
 
   try {
     // Check if credentials are valid
@@ -39,7 +40,7 @@ export async function validateLoggedInToken(req: Request, res: Response) {
   const token = req.cookies.token;
 
   const tokenPayload =
-    token && (validateToken(token) as { id: string; role: string });
+    token && (validateToken(token) as { id: string; });
 
   if (tokenPayload) {
     const userData = await findUnique({
