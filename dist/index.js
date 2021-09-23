@@ -10,12 +10,17 @@ const morgan_1 = __importDefault(require("morgan"));
 const router_1 = __importDefault(require("./resources/users/router"));
 const router_2 = __importDefault(require("./resources/auth/router"));
 const loginAuth_1 = __importDefault(require("./middlewares/loginAuth"));
-// import multer from "multer";
-// import { v2 as cloudinary } from "cloudinary";
-// import { CloudinaryStorage } from "multer-storage-cloudinary";
+const multer_1 = __importDefault(require("multer"));
+const cloudinary_1 = require("cloudinary");
 const controller_1 = require("./resources/items/controller");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const router_3 = __importDefault(require("./resources/items/router"));
+const upload = (0, multer_1.default)({ dest: "uploads/" });
+cloudinary_1.v2.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
+});
 (0, dotenv_1.config)();
 const app = (0, express_1.default)();
 /* SETUP MIDDLEWARE */
@@ -31,10 +36,10 @@ app.use(loginAuth_1.default);
 app.use("/items", router_3.default);
 /* SETUP ROUTES */
 app.post("/items", controller_1.addItem);
+app.post("/upload_files", upload.array("files"), controller_1.addItem);
 app.get("*", (req, res) => {
     res.json({ ok: true });
 });
-// import usersRouter from "./resources/users/router";
 /* START SERVER */
 const port = process.env.PORT || 3030;
 app.listen(port, () => {

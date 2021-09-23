@@ -3,6 +3,7 @@ import { validateToken } from "../utils/authGenerator";
 
 export default (req: Request | any, res: Response, next: NextFunction) => {
   const token = req.cookies.token;
+  console.log("Token:", token);
   let payload = null;
 
   if (token) {

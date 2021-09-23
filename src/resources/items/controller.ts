@@ -3,20 +3,28 @@ import dbClient from "../../utils/database";
 
 // const cloudinary = require("cloudinary").v2;
 
-export const addItem = async (req: Request, res: Response) => {
-  const newItem = req.body;
-  console.log(newItem)
+// export const addItem = async (req: Request, res: Response) => {
+//   const newItem = req.body;
+//   console.log(newItem)
 
-  try {
-    const createdItem = await dbClient.item.create({
-      data: {
-        ...newItem,
-      },
-    });
-    res.json({ data: createdItem });
-  } catch (error) {
-    res.json({ error });
-  }
+//   try {
+//     const createdItem = await dbClient.item.create({
+//       data: {
+//         ...newItem,
+//       },
+//     });
+//     res.json({ data: createdItem });
+//   } catch (error) {
+//     res.json({ error });
+//   }
+
+export const addItem = function uploadFiles(req:Request, res:Response) {
+    console.log(req.body);
+    console.log(req.files);
+    res.json({ message: "Successfully uploaded files" });
+}
+
+
 
 //   parser.single("image"), (req, res) => {
 //     console.log(req.file) // to see what is returned to you
@@ -56,4 +64,4 @@ export const addItem = async (req: Request, res: Response) => {
 //     .finally(function () {
 //       res.render("photos/create_direct", { item: item, upload: item.image });
 //     });
-}
+

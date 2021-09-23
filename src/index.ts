@@ -8,28 +8,22 @@ import usersRouter from "./resources/users/router";
 import authRouter from "./resources/auth/router";
 import loginAuth from "./middlewares/loginAuth";
 import { JwtPayload } from "jsonwebtoken";
-// import multer from "multer";
-// import { v2 as cloudinary } from "cloudinary";
-// import { CloudinaryStorage } from "multer-storage-cloudinary";
+import multer from "multer";
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { addItem } from "./resources/items/controller";
 import cookieParser from "cookie-parser";
 import itemsRouter from "./resources/items/router"
+import multerUploads from "multer"
+const upload = multer({ dest: "uploads/" });
 
-// cloudinary.config({
-//   cloud_name: process.env.CLOUD_NAME,
-//   api_key: process.env.API_KEY,
-//   api_secret: process.env.API_SECRET
-//   });
 
-//   const storage = new CloudinaryStorage({
-//   cloudinary: cloudinary,
-//   })
 
-// folder: "demo",
-// allowedFormats: ["jpg", "png"],
-// transformation: [{ width: 500, height: 500, crop: "limit" }]
-// });
-// const parser = multer({ storage: storage });
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
+  });
 
 declare global {
   namespace Express {
@@ -63,11 +57,12 @@ app.use("/items", itemsRouter);
 
 app.post("/items", addItem);
 
+app.post("/upload_files", upload.array("files"), addItem);
+
 app.get("*", (req, res) => {
   res.json({ ok: true });
 });
 
-// import usersRouter from "./resources/users/router";
 
 /* START SERVER */
 
