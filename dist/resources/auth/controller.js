@@ -15,7 +15,6 @@ const authGenerator_1 = require("../../utils/authGenerator");
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //  Get user credentials
     const userCreds = req.body;
-    console.log(userCreds);
     try {
         // Check if credentials are valid
         const loggedUser = yield (0, service_1.findUserWithValidation)(userCreds);

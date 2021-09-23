@@ -55,9 +55,9 @@ app.use("/items", itemsRouter);
 
 /* SETUP ROUTES */
 
-app.post("/items", addItem);
+// app.post("/items", addItem);
 
-app.post("/upload_files", upload.array("files"), addItem);
+app.post("/items", upload.array("files"), addItem);
 
 app.get("*", (req, res) => {
   res.json({ ok: true });

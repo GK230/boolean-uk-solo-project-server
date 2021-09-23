@@ -18,11 +18,34 @@ import dbClient from "../../utils/database";
 //     res.json({ error });
 //   }
 
-export const addItem = function uploadFiles(req:Request, res:Response) {
-    console.log(req.body);
-    console.log(req.files);
-    res.json({ message: "Successfully uploaded files" });
+
+export const addItem = async (req:Request, res:Response) => {
+  const newItem = req.body;
+  const brand = newItem.brand
+
+  for (const item of newItem.itemType) {
+    console.log(item)
+  }
+
+
+  // console.dir(req.body);
+
+
+
+  try {
+    const createdItem = await dbClient.item.create({
+      data: {
+        ...newItem,
+      },
+    });
+    res.json({ data: createdItem });
+  } catch (error) {
+    res.json({ error });
+    // console.log(req.body);
+    // console.log(req.files);
+    // res.json({ message: "Successfully uploaded files" });
 }
+
 
 
 
@@ -64,4 +87,4 @@ export const addItem = function uploadFiles(req:Request, res:Response) {
 //     .finally(function () {
 //       res.render("photos/create_direct", { item: item, upload: item.image });
 //     });
-
+}

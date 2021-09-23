@@ -6,7 +6,6 @@ import { createToken, validateToken } from "../../utils/authGenerator";
 export const loginUser = async (req: Request, res: Response) => {
   //  Get user credentials
   const userCreds: User = req.body;
-  console.log(userCreds)
 
   try {
     // Check if credentials are valid
