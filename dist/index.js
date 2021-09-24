@@ -34,8 +34,11 @@ app.use(router_2.default);
 app.use("/user", router_1.default);
 app.use(loginAuth_1.default);
 app.use("/items", router_3.default);
+app.use("/itemType", router_3.default);
 /* SETUP ROUTES */
 // app.post("/items", addItem);
+// app.post("/items", getItem)
+// app.post("itemType", getItem)
 app.post("/items", upload.array("files"), controller_1.addItem);
 app.get("*", (req, res) => {
     res.json({ ok: true });

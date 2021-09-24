@@ -18,33 +18,47 @@ import dbClient from "../../utils/database";
 //     res.json({ error });
 //   }
 
+// export const getItem = async (req:Request, res:Response) => {
+//   const newItem = req.body;
+//   const brand = newItem.brand
+//   const itemTypes = newItem.itemType
+
+  // for (const item of newItem.itemType) {
+  //   console.log(item)
+  // }
+
 
 export const addItem = async (req:Request, res:Response) => {
   const newItem = req.body;
   const brand = newItem.brand
+  console.log(newItem)
 
   for (const item of newItem.itemType) {
-    console.log(item)
+    // console.log(item)
   }
+
+  return newItem
 
 
   // console.dir(req.body);
 
 
 
-  try {
-    const createdItem = await dbClient.item.create({
-      data: {
-        ...newItem,
-      },
-    });
-    res.json({ data: createdItem });
-  } catch (error) {
-    res.json({ error });
+  // try {
+  //   const createdItem = await dbClient.item.create({
+  //     data: {
+  //       ...newItem,
+  //     },
+  //   });
+  //   res.json({ data: createdItem });
+  // } catch (error) {
+  //   res.json({ error });
     // console.log(req.body);
     // console.log(req.files);
     // res.json({ message: "Successfully uploaded files" });
 }
+
+// export Item
 
 
 
@@ -87,4 +101,4 @@ export const addItem = async (req:Request, res:Response) => {
 //     .finally(function () {
 //       res.render("photos/create_direct", { item: item, upload: item.image });
 //     });
-}
+

@@ -14,6 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getItemType = void 0;
 const database_1 = __importDefault(require("../../utils/database"));
+// export const getItem = async (req:Request, res:Response) => {
+//   const newItem = req.body;
+//   const brand = newItem.brand
+//   const itemTypes = newItem.itemType
+// const getItemTypes = await dbClient.itemType.findMany({
+//   where: {
+//   }
+// })
 const getItemType = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const name = req.params.name;
     console.log("getItemType", name);

@@ -51,11 +51,16 @@ app.use(authRouter);
 app.use("/user", usersRouter);
 app.use(loginAuth);
 app.use("/items", itemsRouter);
+app.use("/itemType", itemsRouter);
+
 
 
 /* SETUP ROUTES */
 
 // app.post("/items", addItem);
+
+// app.post("/items", getItem)
+// app.post("itemType", getItem)
 
 app.post("/items", upload.array("files"), addItem);
 
