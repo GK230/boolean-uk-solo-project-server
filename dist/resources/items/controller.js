@@ -8,8 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addItem = void 0;
+const database_1 = __importDefault(require("../../utils/database"));
+const cloudinary_1 = require("cloudinary");
 // const cloudinary = require("cloudinary").v2;
 // export const addItem = async (req: Request, res: Response) => {
 //   const newItem = req.body;
@@ -33,12 +38,95 @@ exports.addItem = void 0;
 // }
 const addItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const newItem = req.body;
-    const brand = newItem.brand;
-    console.log(newItem);
+    const imageFile = newItem.itemImages;
+    // Upload file to Cloudinary
+    cloudinary_1.v2.uploader
+        .upload(imageFile, { tags: "express_sample" })
+        .then(function (image) {
+        console.log("** file uploaded to Cloudinary service");
+        console.dir(image);
+        imageFile.image = image;
+        // Save photo with image metadata
+        return imageFile.save();
+    })
+        .then(function () {
+        console.log("** photo saved");
+    })
+        .finally(function () {
+        res.render("photos/create_through_server", {
+            photo: imageFile,
+            upload: imageFile.image,
+        });
+    });
+    let itemTypetotal = 0;
     for (const item of newItem.itemType) {
-        // console.log(item)
+        const itemTypeCredits = yield database_1.default.itemType.findMany({
+            where: {
+                name: item,
+            },
+        });
+        itemTypetotal = itemTypeCredits[0].creditModifier + itemTypetotal;
     }
-    return newItem;
+    const brandCredits = yield database_1.default.brand.findMany({
+        where: {
+            name: newItem.brand,
+        },
+    });
+    const totalBrandCredits = brandCredits[0].creditModifier;
+    const itemIds = [];
+    for (const item of newItem.itemType) {
+        const itemTypeIds = yield database_1.default.itemType.findMany({
+            where: {
+                name: item,
+            },
+        });
+        itemIds.push(itemTypeIds[0].id);
+        // console.log(itemTypeIds)
+    }
+    console.log(itemIds);
+    // [ { id: 1, name: 'fashion', creditModifier: 0 } ]
+    // [ { id: 4, name: 'mens', creditModifier: 0 } ]
+    // [ { id: 2, name: 'shoes', creditModifier: 3 } ]
+    let totalCredits = 0;
+    totalCredits = itemTypetotal + totalBrandCredits;
+    const brandId = brandCredits[0].id;
+    const updatedItem = {
+        userId: newItem.userId,
+        credits: totalCredits,
+        image: newItem.itemImages,
+        title: newItem.title,
+        description: newItem.description,
+        brandId: brandId,
+    };
+    console.log(updatedItem);
+    const mappedItemTypeIds = itemIds.map((id) => {
+        return {
+            id: id,
+        };
+    });
+    console.log(mappedItemTypeIds);
+    try {
+        const createdItem = yield database_1.default.item.create({
+            data: Object.assign({}, updatedItem),
+        });
+        console.log("createdItem", createdItem);
+        const updated = yield database_1.default.item.update({
+            where: {
+                id: createdItem.id,
+            },
+            data: {
+                itemTypes: {
+                    connect: mappedItemTypeIds,
+                },
+            },
+        });
+        console.log("updated", updated);
+        res.json({ data: createdItem });
+    }
+    catch (error) {
+        console.log(error);
+        res.json({ error });
+    }
     // console.dir(req.body);
     // try {
     //   const createdItem = await dbClient.item.create({
