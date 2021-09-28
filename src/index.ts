@@ -1,6 +1,6 @@
 import { config } from "dotenv";
 
-import express from "express";
+import express, { Request, Response } from "express";
 import multer from "multer";
 import cors from "cors";
 import morgan from "morgan";
@@ -15,21 +15,10 @@ import { addItem } from "./resources/items/controller";
 import cookieParser from "cookie-parser";
 import itemsRouter from "./resources/items/router"
 import multerUploads from "multer"
+import dbClient from "./utils/database";
+import Loki from 'lokijs';
+
 const upload = multer({ dest: "uploads/" });
-
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET
-  });
-
-  const cloudStorage = new CloudinaryStorage({
-    cloudinary,
-  });
-
-
-
-
 
 declare global {
   namespace Express {
@@ -48,24 +37,33 @@ const app = express();
 app.disable("x-powered-by");
 
 app.use(cookieParser());
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: "http://localhost:3000", methods: ["GET", "POST"], credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
+// app.use(authRouter);
+// app.use("/user", usersRouter);
+// app.use(loginAuth);
+// app.use("/items", itemsRouter);
+
 app.use(authRouter);
 app.use("/user", usersRouter);
-app.use(loginAuth);
-app.use("/items", itemsRouter);
-// app.use("/itemType", itemsRouter);
+app.use("/items", loginAuth, itemsRouter);
 
 
 
 /* SETUP ROUTES */
-// app.get('items', add_through_server);
+
+app.post("/upload_files", upload.array("files"), uploadFiles);
+function uploadFiles(req: Request, res: Response) {
+    console.log(req.body.path);
+    res.json({ message: "Successfully uploaded files" });
+}
 
 
-app.post("/items", addItem);
+
+app.post("/items", loginAuth, addItem);
 
 // app.post("/items", getItem)
 // app.post("itemType", getItem)

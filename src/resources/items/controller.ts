@@ -30,27 +30,27 @@ import { v2 as cloudinary } from "cloudinary";
 
 export const addItem = async (req: Request, res: Response) => {
   const newItem = req.body;
-  const imageFile = newItem.itemImages;
+  // const imageFile = newItem.itemImages;
 
-  // Upload file to Cloudinary
-  cloudinary.uploader
-    .upload(imageFile, { tags: "express_sample" })
-    .then(function (image) {
-      console.log("** file uploaded to Cloudinary service");
-      console.dir(image);
-      imageFile.image = image;
-      // Save photo with image metadata
-      return imageFile.save();
-    })
-    .then(function () {
-      console.log("** photo saved");
-    })
-    .finally(function () {
-      res.render("photos/create_through_server", {
-        photo: imageFile,
-        upload: imageFile.image,
-      });
-    });
+  // // Upload file to Cloudinary
+  // cloudinary.uploader
+  //   .upload(imageFile)
+  //   .then(function (image) {
+  //     console.log("** file uploaded to Cloudinary service");
+  //     console.dir(image);
+  //     imageFile.image = image;
+  //     // Save photo with image metadata
+  //     return imageFile.save();
+  //   })
+  //   .then(function () {
+  //     console.log("** photo saved");
+  //   })
+  //   .finally(function () {
+  //     res.render("photos/create_through_server", {
+  //       photo: imageFile,
+  //       upload: imageFile.image,
+  //     });
+  //   });
 
   let itemTypetotal = 0;
   for (const item of newItem.itemType) {
@@ -98,6 +98,8 @@ export const addItem = async (req: Request, res: Response) => {
     description: newItem.description,
     brandId: brandId,
   };
+
+  console.log(updatedItem.image)
 
   console.log(updatedItem);
   const mappedItemTypeIds = itemIds.map((id) => {

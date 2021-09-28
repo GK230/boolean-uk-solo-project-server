@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addItem = void 0;
 const database_1 = __importDefault(require("../../utils/database"));
-const cloudinary_1 = require("cloudinary");
 // const cloudinary = require("cloudinary").v2;
 // export const addItem = async (req: Request, res: Response) => {
 //   const newItem = req.body;
@@ -38,26 +37,26 @@ const cloudinary_1 = require("cloudinary");
 // }
 const addItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const newItem = req.body;
-    const imageFile = newItem.itemImages;
-    // Upload file to Cloudinary
-    cloudinary_1.v2.uploader
-        .upload(imageFile, { tags: "express_sample" })
-        .then(function (image) {
-        console.log("** file uploaded to Cloudinary service");
-        console.dir(image);
-        imageFile.image = image;
-        // Save photo with image metadata
-        return imageFile.save();
-    })
-        .then(function () {
-        console.log("** photo saved");
-    })
-        .finally(function () {
-        res.render("photos/create_through_server", {
-            photo: imageFile,
-            upload: imageFile.image,
-        });
-    });
+    // const imageFile = newItem.itemImages;
+    // // Upload file to Cloudinary
+    // cloudinary.uploader
+    //   .upload(imageFile)
+    //   .then(function (image) {
+    //     console.log("** file uploaded to Cloudinary service");
+    //     console.dir(image);
+    //     imageFile.image = image;
+    //     // Save photo with image metadata
+    //     return imageFile.save();
+    //   })
+    //   .then(function () {
+    //     console.log("** photo saved");
+    //   })
+    //   .finally(function () {
+    //     res.render("photos/create_through_server", {
+    //       photo: imageFile,
+    //       upload: imageFile.image,
+    //     });
+    //   });
     let itemTypetotal = 0;
     for (const item of newItem.itemType) {
         const itemTypeCredits = yield database_1.default.itemType.findMany({
@@ -98,6 +97,7 @@ const addItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         description: newItem.description,
         brandId: brandId,
     };
+    console.log(updatedItem.image);
     console.log(updatedItem);
     const mappedItemTypeIds = itemIds.map((id) => {
         return {
