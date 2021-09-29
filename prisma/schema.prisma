@@ -46,7 +46,7 @@ model Item {
   itemTypes   ItemType[]
   brand       Brand?     @relation(fields: [brandId], references: [id])
   brandId     Int
-  User        User      @relation(fields: [userId], references: [id])
+  User        User?      @relation(fields: [userId], references: [id])
   Review      Review?
 }
 

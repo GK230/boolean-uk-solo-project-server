@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 // import { getItem } from "./controller";
-const controller_1 = require("./controller");
+// import { addItem } from "./controller";
 const router = (0, express_1.Router)();
-router.post("/items", controller_1.addItem);
+// router.post("/items", addItem);
 exports.default = router;
