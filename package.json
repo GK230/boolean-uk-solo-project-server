@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "tsc && node ./dist/index.js || exit1",
+    "compile": "tsc && node dist/index.js",
     "start": "nodemon -e ts -x \"npm run compile\""
   },
   "keywords": [],
