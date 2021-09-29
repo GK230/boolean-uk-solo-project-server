@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "tsc && node dist/index.js",
-    "start": "nodemon -e ts -x \"npm run compile\""
+    "start": "node dist/index.js",
+    "postinstall": "tsc",
+    "startdev": "nodemon -e ts -x \"npm start\""
   },
   "keywords": [],
   "author": "",
