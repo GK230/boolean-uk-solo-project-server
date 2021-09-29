@@ -53,14 +53,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
-app.use(authRouter);
-app.use("/user", usersRouter);
-app.use(loginAuth);
-app.use("/items", itemsRouter);
-
 // app.use(authRouter);
 // app.use("/user", usersRouter);
-// app.use("/items", loginAuth, itemsRouter);
+// app.use(loginAuth);
+// app.use("/items", itemsRouter);
+
+app.use(authRouter);
+app.use("/user", usersRouter);
+app.use("/items", loginAuth, itemsRouter);
 
 /* SETUP ROUTES */
 app.post("/upload_files", upload.array("files"), uploadFiles);
