@@ -2,17 +2,17 @@ import { config } from "dotenv";
 
 import express, { Request, Response } from "express";
 
+import authRouter from "./resources/auth/router";
+import usersRouter from "./resources/users/router";
 import cors from "cors";
 import morgan from "morgan";
-import usersRouter from "./resources/users/router";
-import authRouter from "./resources/auth/router";
-import loginAuth from "./middlewares/loginAuth";
 import { JwtPayload } from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import itemsRouter from "./resources/items/router";
 import _ from "lodash";
 import { uploadFiles } from "./resources/items/controller";
 import multer from "multer";
+import loginAuth from "./middlewares/loginAuth";
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -53,14 +53,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
-// app.use(authRouter);
-// app.use("/user", usersRouter);
-// app.use(loginAuth);
-// app.use("/items", itemsRouter);
+app.use(authRouter);
 
-// app.use(authRouter);
-app.use("/user", usersRouter);
-app.use("/items", loginAuth, itemsRouter);
+// This is your gate keeper to make sure the user is logged in!
+// Any route after this one will be protected by login!
+app.use(loginAuth);
+
+app.use("/users", usersRouter);
 
 /* SETUP ROUTES */
 app.post("/upload_files", upload.array("files"), uploadFiles);

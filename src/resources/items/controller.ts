@@ -1,18 +1,15 @@
 import { Response, Request } from "express";
 import dbClient from "../../utils/database";
-import path from 'path'
-import fs from "fs"
 
-
-
-export async function uploadFiles(req: Request, res: Response) {
+export const uploadFiles = async (req: Request, res: Response) => {
+  console.log("heyyyyyyy");
   const newItem = req.body;
+  console.log("newItem", newItem);
 
   if (req.files) {
-
     const img = (req as any).files[0].path;
-    newItem.img = img
-
+    newItem.img = img;
+    console.log("image", newItem)
   }
 
   let itemTypetotal = 0;
@@ -41,12 +38,12 @@ export async function uploadFiles(req: Request, res: Response) {
     });
     itemIds.push(itemTypeIds[0].id);
   }
-  console.log(itemIds);
 
   let totalCredits = 0;
   totalCredits = itemTypetotal + totalBrandCredits;
 
   const brandId = brandCredits[0].id;
+  console.log("brandId", brandId);
 
   const updatedItem = {
     userId: newItem.userId,
@@ -54,26 +51,20 @@ export async function uploadFiles(req: Request, res: Response) {
     image: newItem.img,
     title: newItem.title,
     description: newItem.description,
-    // brandId: brandId,
+    brandId: brandId,
   };
 
-  // console.log(updatedItem.image)
-
-  console.log(updatedItem);
+  console.log("updatedItem", updatedItem);
   const mappedItemTypeIds = itemIds.map((id) => {
     return {
       id: id,
     };
   });
-  console.log(mappedItemTypeIds);
 
   try {
     const createdItem = await dbClient.item.create({
       data: {
         ...updatedItem,
-        // itemTypes: {
-        //   connect: mappedItemTypeIds,
-        // },
       },
     });
     console.log("createdItem", createdItem);
@@ -94,4 +85,4 @@ export async function uploadFiles(req: Request, res: Response) {
     console.log(error);
     res.json({ error });
   }
-}
+};
