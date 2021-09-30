@@ -58,7 +58,7 @@ app.use(morgan("dev"));
 // app.use(loginAuth);
 // app.use("/items", itemsRouter);
 
-app.use(authRouter);
+// app.use(authRouter);
 app.use("/user", usersRouter);
 app.use("/items", loginAuth, itemsRouter);
 
