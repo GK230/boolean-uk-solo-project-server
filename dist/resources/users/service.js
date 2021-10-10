@@ -16,7 +16,7 @@ const database_1 = __importDefault(require("../../utils/database"));
 const bcrypt_1 = require("bcrypt");
 const createWithHash = (newUser) => __awaiter(void 0, void 0, void 0, function* () {
     const plainTextPassword = newUser.password;
-    const hashedPassword = yield (0, bcrypt_1.hash)(plainTextPassword, 10);
+    const hashedPassword = yield bcrypt_1.hash(plainTextPassword, 10);
     const savedUser = yield database_1.default.user.create({
         data: Object.assign(Object.assign({}, newUser), { password: hashedPassword }),
     });

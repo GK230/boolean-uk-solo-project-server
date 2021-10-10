@@ -6,11 +6,11 @@ const router = Router();
 
 // login
 
-router.route("/login").post(loginUser);
+router.post("/login", loginUser);
 
-router.route("/logout").get(logoutUser);
+router.get("/logout", logoutUser);
 
-router.route("/signup").post(createUser);
+router.post("/signup", createUser);
 
 // logout??
 

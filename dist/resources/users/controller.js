@@ -12,93 +12,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.createUser = exports.getUser = exports.getAllUsers = void 0;
+exports.createUser = exports.getAllUsers = void 0;
+const authGenerator_1 = require("../../utils/authGenerator");
+// I'm importing from service my patched version of prisma model
 const service_1 = __importDefault(require("./service"));
 const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = Number(req.params.id);
-    try {
-        const user = yield service_1.default.findMany();
-        res.json({ data: user });
-    }
-    catch (error) {
-        res.json({ error });
-    }
+    const allUsers = yield service_1.default.findMany();
+    res.json({ data: allUsers });
 });
 exports.getAllUsers = getAllUsers;
-const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = Number(req.params.id);
-    try {
-        const user = yield service_1.default.findUnique({
-            where: {
-                id,
-            },
-            include: {
-                purchases: true,
-                reviews: true,
-                items: true,
-            },
-        });
-        res.json({ data: user });
-    }
-    catch (error) {
-        res.json({ error });
-    }
-});
-exports.getUser = getUser;
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const newUser = req.body;
-    newUser.totalCredits = 0;
-    try {
-        const savedUser = yield service_1.default.createWithHash(newUser);
-        res.json({ data: { username: savedUser.username } });
-    }
-    catch (error) {
-        console.error(error);
-        res.json({ error });
-    }
-    // const token = createToken({
-    //   id: savedUser.id,
-    //   username: savedUser.username,
-    // });
-    // // This creates a cookie that can't be accessed by Javascript in the Frontend
-    // // httpOnly: true
-    // res.cookie("token", token, { httpOnly: true });
+    // This is my modified create version, with the password hashing!
+    const savedUser = yield service_1.default.createWithHash(newUser);
+    const token = authGenerator_1.createToken({
+        id: savedUser.id,
+        username: savedUser.username,
+    });
+    // This creates a cookie that can't be accessed by Javascript in the Frontend
+    // httpOnly: true
+    res.cookie("token", token, { httpOnly: true });
+    res.json({ data: { username: savedUser.username } });
 });
 exports.createUser = createUser;
-const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = parseInt(req.params.id);
-    const updateInfo = req.body;
-    try {
-        const existUser = yield service_1.default.findUnique({
-            where: {
-                id,
-            },
-        });
-        const updated = yield service_1.default.update({
-            where: {
-                id,
-            },
-            data: Object.assign(Object.assign({}, existUser), updateInfo),
-        });
-        res.json({ data: updated });
-    }
-    catch (error) {
-        res.json({ error: `ID ${id} doesn't exict` });
-    }
-});
-exports.updateUser = updateUser;
-const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = parseInt(req.params.id);
-    try {
-        const deleted = yield service_1.default.delete({
-            where: {
-                id,
-            },
-        });
-        res.json({ data: deleted });
-    }
-    catch (error) {
-        res.json({ error });
-    }
-});
-exports.deleteUser = deleteUser;

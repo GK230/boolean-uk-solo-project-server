@@ -1,15 +1,14 @@
 import { Response, Request } from "express";
 import dbClient from "../../utils/database";
+import { User } from "@prisma/client";
 
 export const uploadFiles = async (req: Request, res: Response) => {
-  console.log("heyyyyyyy");
   const newItem = req.body;
-  console.log("newItem", newItem);
 
   if (req.files) {
     const img = (req as any).files[0].path;
     newItem.img = img;
-    console.log("image", newItem)
+    console.log("image", newItem);
   }
 
   let itemTypetotal = 0;
@@ -83,6 +82,30 @@ export const uploadFiles = async (req: Request, res: Response) => {
     res.json({ data: createdItem });
   } catch (error) {
     console.log(error);
+    res.json({ error });
+  }
+};
+
+export const getItems = async (req: Request, res: Response) => {
+  try {
+    const items = await dbClient.item.findMany();
+    res.json({ data: items });
+  } catch (error) {
+    res.json({ error });
+  }
+};
+
+export const getUserItems = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+
+  try {
+    const userItems = await dbClient.item.findMany({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.json({ data: userItems });
+  } catch (error) {
     res.json({ error });
   }
 };

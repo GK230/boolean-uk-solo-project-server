@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findUnique = exports.findUserWithValidation = void 0;
+exports.findUserWithValidation = void 0;
 const database_1 = __importDefault(require("../../utils/database"));
 const bcrypt_1 = require("bcrypt");
 const findUserWithValidation = (userData) => __awaiter(void 0, void 0, void 0, function* () {
@@ -21,10 +21,9 @@ const findUserWithValidation = (userData) => __awaiter(void 0, void 0, void 0, f
     });
     if (!foundUser)
         throw new Error("Username/Password incorrect");
-    const isPasswordValid = yield (0, bcrypt_1.compare)(userData.password, foundUser.password);
+    const isPasswordValid = yield bcrypt_1.compare(userData.password, foundUser.password);
     if (!isPasswordValid)
         throw new Error("Username/Password incorrect");
     return foundUser;
 });
 exports.findUserWithValidation = findUserWithValidation;
-exports.findUnique = database_1.default.user.findUnique;

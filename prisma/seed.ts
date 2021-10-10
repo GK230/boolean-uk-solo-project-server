@@ -4,19 +4,19 @@ const dbClient = new PrismaClient();
 const itemTypes = [
   {
     name: "fashion",
-    creditModifier: 0,
+    creditModifier: 1,
   },
   {
     name: "home",
-    creditModifier: 0,
+    creditModifier: 1,
   },
   {
     name: "mens",
-    creditModifier: 0,
+    creditModifier: 1,
   },
   {
     name: "womens",
-    creditModifier: 0,
+    creditModifier: 1,
   },
   {
     name: "shoes",
@@ -72,15 +72,15 @@ const itemTypes = [
   },
   {
     name: "bedroom",
-    creditModifier: 0,
+    creditModifier: 1,
   },
   {
     name: "kitchen",
-    creditModifier: 0,
+    creditModifier: 1,
   },
   {
     name: "living-room",
-    creditModifier: 0,
+    creditModifier: 1,
   },
 ];
 
