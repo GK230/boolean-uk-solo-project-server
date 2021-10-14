@@ -15,3 +15,13 @@ export default (req: Request, res: Response, next: NextFunction) => {
       .json({ err: "You need to be logged in to access this data" });
   }
 };
+
+export const checkUser = (req: Request, res: Response, next: NextFunction) => {
+  const token = req.cookies.token;
+
+  if (token) {
+
+  } else {
+    
+  }
+}

@@ -54,13 +54,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 app.use(authRouter);
-app.use("/users", loginAuth, usersRouter);
+
+app.use(loginAuth);
+app.use("/users", usersRouter);
+app.use("/items", itemsRouter);
+
+
 
 // This is your gate keeper to make sure the user is logged in!
 // Any route after this one will be protected by login!
 // app.use(loginAuth);
 
-app.use("/items", itemsRouter);
 
 /* SETUP ROUTES */
 app.post("/upload_files", upload.array("files"), uploadFiles);

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.checkUser = void 0;
 const authGenerator_1 = require("../utils/authGenerator");
 exports.default = (req, res, next) => {
     const token = req.cookies.token;
@@ -14,3 +15,11 @@ exports.default = (req, res, next) => {
             .json({ err: "You need to be logged in to access this data" });
     }
 };
+const checkUser = (req, res, next) => {
+    const token = req.cookies.token;
+    if (token) {
+    }
+    else {
+    }
+};
+exports.checkUser = checkUser;

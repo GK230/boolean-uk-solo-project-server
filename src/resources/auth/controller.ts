@@ -15,15 +15,15 @@ export const loginUser = async (req: Request, res: Response) => {
     // Create token, this will be the user Passport
     const token = createToken({
       id: loggedUser.id,
-      role: loggedUser.role,
       username: loggedUser.username,
     });
+  
 
     // This creates a cookie that can't be accessed by Javascript in the Frontend
     // httpOnly: true
     res.cookie("token", token, { httpOnly: true });
 
-    res.json({ data: { username: loggedUser.username } });
+    res.json({ data: { username: loggedUser.username, id: loggedUser.id } });
   } catch (error) {
     res.status(401).json({ error });
   }

@@ -19,9 +19,11 @@ export const createUser = async (req: Request, res: Response) => {
     username: savedUser.username,
   });
 
+  console.log(savedUser);
+
   // This creates a cookie that can't be accessed by Javascript in the Frontend
   // httpOnly: true
   res.cookie("token", token, { httpOnly: true });
 
-  res.json({ data: { username: savedUser.username } });
+  res.json({ data: { username: savedUser.username, id: savedUser.id } });
 };
