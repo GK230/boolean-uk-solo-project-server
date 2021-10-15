@@ -44,8 +44,10 @@ export const uploadFiles = async (req: Request, res: Response) => {
   const brandId = brandCredits[0].id;
   console.log("brandId", brandId);
 
+  const userId = Number(newItem.userId)
+
   const updatedItem = {
-    userId: newItem.userId,
+    userId: userId,
     credits: totalCredits,
     image: newItem.img,
     title: newItem.title,
@@ -101,7 +103,7 @@ export const getUserItems = async (req: Request, res: Response) => {
   try {
     const userItems = await dbClient.item.findMany({
       where: {
-        id: req.params.id,
+        userId: id,
       },
     });
     res.json({ data: userItems });

@@ -49,8 +49,9 @@ const uploadFiles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     totalCredits = itemTypetotal + totalBrandCredits;
     const brandId = brandCredits[0].id;
     console.log("brandId", brandId);
+    const userId = Number(newItem.userId);
     const updatedItem = {
-        userId: newItem.userId,
+        userId: userId,
         credits: totalCredits,
         image: newItem.img,
         title: newItem.title,
@@ -102,7 +103,7 @@ const getUserItems = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         const userItems = yield database_1.default.item.findMany({
             where: {
-                id: req.params.id,
+                userId: id,
             },
         });
         res.json({ data: userItems });

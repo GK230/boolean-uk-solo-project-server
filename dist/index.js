@@ -13,7 +13,6 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const router_3 = __importDefault(require("./resources/items/router"));
 const controller_1 = require("./resources/items/controller");
 const multer_1 = __importDefault(require("multer"));
-const loginAuth_1 = __importDefault(require("./middlewares/loginAuth"));
 var storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "uploads");
@@ -37,12 +36,10 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(morgan_1.default("dev"));
 app.use(router_1.default);
-app.use(loginAuth_1.default);
+// app.use(loginAuth);
 app.use("/users", router_2.default);
 app.use("/items", router_3.default);
-// This is your gate keeper to make sure the user is logged in!
-// Any route after this one will be protected by login!
-// app.use(loginAuth);
+app.use("/uploads", express_1.default.static("uploads"));
 /* SETUP ROUTES */
 app.post("/upload_files", upload.array("files"), controller_1.uploadFiles);
 app.get("*", (req, res) => {

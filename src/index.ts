@@ -55,16 +55,10 @@ app.use(morgan("dev"));
 
 app.use(authRouter);
 
-app.use(loginAuth);
+// app.use(loginAuth);
 app.use("/users", usersRouter);
 app.use("/items", itemsRouter);
-
-
-
-// This is your gate keeper to make sure the user is logged in!
-// Any route after this one will be protected by login!
-// app.use(loginAuth);
-
+app.use("/uploads", express.static("uploads"));
 
 /* SETUP ROUTES */
 app.post("/upload_files", upload.array("files"), uploadFiles);

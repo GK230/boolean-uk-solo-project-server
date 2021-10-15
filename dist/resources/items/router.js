@@ -4,6 +4,8 @@ const express_1 = require("express");
 // import { addItem } from "./controller";
 // router.post("/upload_)", addItem);
 const controller_1 = require("./controller");
+const controller_2 = require("./controller");
 const router = express_1.Router();
 router.post("/", controller_1.uploadFiles);
+router.get("/:id", controller_2.getUserItems);
 exports.default = router;
